@@ -1,0 +1,23 @@
+SELECT locationgroup.name as "LocGroup",
+       location.name as "Location",
+       part.num as "PartNumber"
+FROM qohview join locationgroup on qohview.locationgroupid = locationgroup.id
+             join location on qohview.locationid = location.id
+             join part on qohview.partid = part.id
+where qohview.qty > 0
+group by locationgroup.name, location.name, part.num;
+
+
+
+select
+    part.num as "PartNumber",
+    part.description as "PartDescription",
+    cast ('NOW' as date) as "today",
+    customtimestamp.info as "CF-Cycle Count Date",
+    part.abccode as "ABCCode"
+from
+    part
+    left join customtimestamp on part.id = customtimestamp.recordid
+where
+    part.activeflag = 1
+    and customtimestamp.customfieldid = 52;
