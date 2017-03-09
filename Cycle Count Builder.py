@@ -51,13 +51,23 @@ elif Today == 3:
 else:
         cyclecount = cyclecount.append(A_Part_Even,ignore_index=True,verify_integrity=False)
 
-# Separate B-Parts, find most needed counts, move relevant parts to cyclecount sheet.  B parts are always 1 per day so no "IF" statement is needed
+# Separate B-Parts, find most needed counts, move relevant parts to cyclecount sheet.
 # B_Part DF is created by pulling all parts from the part df with an ABCcode of B.  The B_Part DF is then sorted by age with oldest on top
 # B_Part_All takes the top row of the B_Part df and then appends it to cyclecount df
 B_Part = part[['PartNumber','PartDescription','Age']][part['ABCCode'] == 'B'].copy()
 B_Part = B_Part.sort_values(by='Age',axis=0,ascending=False,)
-B_Part_All = B_Part.head(1)
-cyclecount = cyclecount.append(B_Part_All)
+B_Part_Even = B_Part.head(1)
+B_Part_Odd = B_Part.head(2)
+if Today == 0:
+        cyclecount = cyclecount.append(B_Part_Even,ignore_index=True,verify_integrity=False)
+elif Today == 1:
+        cyclecount = cyclecount.append(B_Part_Odd,ignore_index=True,verify_integrity=False)
+elif Today == 2:
+        cyclecount = cyclecount.append(B_Part_Even,ignore_index=True,verify_integrity=False)
+elif Today == 3:
+        cyclecount = cyclecount.append(B_Part_Odd,ignore_index=True,verify_integrity=False)
+else:
+        cyclecount = cyclecount.append(B_Part_Even,ignore_index=True,verify_integrity=False)
 
 # Separate C-Parts, find most needed counts, move relevant parts to cyclecount sheet based on day of week
 # C_Part Dataframe is created by pulling all parts from the part dataframe with the ABCcode of 'C'.  The C_Part DF is then sorted by age with oldest on top
@@ -67,10 +77,7 @@ cyclecount = cyclecount.append(B_Part_All)
 C_Part = part[['PartNumber','PartDescription','Age']][part['ABCCode'] == 'C'].copy()
 C_Part = C_Part.sort_values(by='Age',axis=0,ascending=False,)
 C_Part_All = C_Part.head(1)
-if Today == 1:
-        cyclecount = cyclecount.append(C_Part_All,ignore_index=True,verify_integrity=False)
-elif Today == 3:
-        cyclecount = cyclecount.append(C_Part_All,ignore_index=True,verify_integrity=False)
+cyclecount = cyclecount.append(C_Part_All,ignore_index=True,verify_integrity=False)
 
 # Count the number of parts on the cycle count,
 #Rows = cyclecount.count()
